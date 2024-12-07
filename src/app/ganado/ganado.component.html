@@ -1,0 +1,221 @@
+<div class="container">
+  <!-- Tabs de navegación -->
+  <div class="tabs">
+    <button class="tab-button" [class.active]="selectedTab === 'ganado'" (click)="selectedTab = 'ganado'">Res</button>
+    <button class="tab-button" [class.active]="selectedTab === 'becerro'" (click)="selectedTab = 'becerro'">Becerro</button>
+  </div>
+
+  <!-- Contenido de Ganado -->
+  <div [ngClass]="{'hidden': selectedTab !== 'ganado'}">
+    <section class="reses-section">
+        <table class="resumen-table">
+            <thead>
+              <tr>
+                <th>Tipo</th>
+                <th>Cantidad</th>
+              </tr>
+            </thead>
+            <tbody>
+              <tr >
+                  <td>{{resumenGanado[1].tipo}}</td>
+                  <td>{{resumenGanado[1].cantidad}}</td>
+              </tr>
+            </tbody>
+          </table>
+          <br>
+      <div class="search-container">
+        <input 
+          type="text" 
+          [(ngModel)]="searchArete" 
+          placeholder="Buscar por arete..." 
+          class="search-input"
+          (input)="filtrarGanado()">
+      </div>
+      <div class="table-container">
+        <table>
+          <thead>
+            <tr>
+              <th>Arete</th>
+              <th>Edad</th>
+              <th>Peso de registro</th>
+              <th>Precio de adquisición</th>
+              <th></th>
+            </tr>
+          </thead>
+          <tbody>
+            <tr *ngFor="let res of resesFiltradas">
+              <td>{{res.id}}</td>
+              <td>{{getEdad(res.fecha_nacimiento)}} Años</td>
+              <td>{{res.peso_registro}}kg</td>
+              <td>${{res.precio_adquisicion}}</td>
+              <td>
+                <button class="info-button" (click)="informacion(res.id)">
+                  <i class="fas fa-info-circle"></i> Info
+                </button>
+              </td>
+            </tr>
+          </tbody>
+        </table>
+      </div>
+    </section>
+  </div>
+
+  <!-- Contenido de Becerro -->
+  <div [ngClass]="{'hidden': selectedTab !== 'becerro'}">
+    <section class="ganado-section">
+      <table class="resumen-table">
+        <thead>
+          <tr>
+            <th>Tipo</th>
+            <th>Cantidad</th>
+          </tr>
+        </thead>
+        <tbody>
+          <tr>
+            <td>{{resumenGanado[0].tipo}}</td>
+            <td>{{resumenGanado[0].cantidad}}</td>
+          </tr>
+        </tbody>
+      </table>
+      <ng-container *ngIf="resumenGanado[0].cantidad > 0">
+        <div class="registro-becerro">
+          <h3>Registro de Arete de Becerro</h3>
+          <form (ngSubmit)="registrarBecerro()" class="form-grid">
+            <div class="form-group">
+              <label for="arete">Arete:</label>
+              <input type="text" id="arete" [(ngModel)]="nuevoBecerro.arete" name="arete" required>
+            </div>
+
+            <div class="form-group">
+              <label for="raza">Raza (opcional):</label>
+              <input type="text" id="raza" [(ngModel)]="nuevoBecerro.raza" name="raza">
+            </div>
+
+            <div class="form-group">
+              <label for="id_padre">Arete del Padre:</label>
+              <input type="text" id="id_padre" [(ngModel)]="nuevoBecerro.id_padre" name="id_padre">
+            </div>
+
+            <div class="form-group">
+              <label for="id_madre">Arete de la Madre:</label>
+              <input type="text" id="id_madre" [(ngModel)]="nuevoBecerro.id_madre" name="id_madre">
+            </div>
+
+            <div class="form-group">
+              <label for="fechaNacimiento">Fecha de Nacimiento:</label>
+              <input type="month" id="fechaNacimiento" [(ngModel)]="nuevoBecerro.fechaNacimiento" name="fechaNacimiento" required>
+            </div>
+
+            <div class="form-group">
+              <label for="peso">Peso:</label>
+              <input type="number" id="peso" [(ngModel)]="nuevoBecerro.peso" name="peso" required>
+            </div>
+
+            <div class="form-group">
+              <label for="costo">Costo:</label>
+              <input type="number" id="costo" [(ngModel)]="nuevoBecerro.costo" name="costo" required>
+            </div>
+
+            <div class="form-group submit-group">
+              <button type="submit">Registrar Becerro</button>
+            </div>
+          </form>
+        </div>
+      </ng-container>
+    </section>
+  </div>
+
+  <div *ngIf="mostrarModal" class="modal-overlay" (click)="cerrarModal()">
+    <div class="modal" (click)="$event.stopPropagation()">
+      <div class="modal-content">
+        <span class="close" (click)="cerrarModal()">&times;</span>
+        <h2>Arete: {{infoGanado?.arete}}</h2>
+        <p><strong>Raza:</strong> {{infoGanado?.raza}}</p>
+        <p><strong>Padres:</strong> {{infoGanado?.padres}}</p>
+        
+        <div class="accordion">
+          <div class="accordion-item">
+            <div class="accordion-header" (click)="toggleAccordion('alimentos')">
+              <h3>Alimentos Brindados</h3>
+              <i class="fas fa-chevron-down"></i>
+            </div>
+            <div class="accordion-content" [class.active]="activeAccordion === 'alimentos'">
+              <table>
+                <thead>
+                  <tr>
+                    <th>Alimento</th>
+                    <th>Coste</th>
+                  </tr>
+                </thead>
+                <tbody>
+                  <tr *ngFor="let alimento of infoGanado?.alimentos">
+                    <td>{{alimento.nombre_alimento}}</td>
+                    <td>{{alimento.coste}}</td>
+                  </tr>
+                </tbody>
+              </table>
+            </div>
+          </div>
+
+          <div class="accordion-item">
+            <div class="accordion-header" (click)="toggleAccordion('medicamentos')">
+              <h3>Medicamentos Brindados</h3>
+              <i class="fas fa-chevron-down"></i>
+            </div>
+            <div class="accordion-content" [class.active]="activeAccordion === 'medicamentos'">
+              <table>
+                <thead>
+                  <tr>
+                    <th>Medicamento</th>
+                    <th>Coste</th>
+                  </tr>
+                </thead>
+                <tbody>
+                  <tr *ngFor="let medicamento of infoGanado?.medicamentos">
+                    <td>{{medicamento.nombre_medicamento}}</td>
+                    <td>{{medicamento.coste}}</td>
+                  </tr>
+                </tbody>
+              </table>
+            </div>
+          </div>
+
+          <div class="accordion-item">
+            <div class="accordion-header" (click)="toggleAccordion('costeTotal')">
+              <h3>Coste Total</h3>
+              <i class="fas fa-chevron-down"></i>
+            </div>
+            <div class="accordion-content" [class.active]="activeAccordion === 'costeTotal'">
+              <table>
+                <thead>
+                  <tr>
+                    <th>Concepto</th>
+                    <th>Coste</th>
+                  </tr>
+                </thead>
+                <tbody>
+                  <tr>
+                    <td>Adquisición</td>
+                    <td>{{infoGanado?.costeAdquisicion}}</td>
+                  </tr>
+                  <tr>
+                    <td>Alimentos</td>
+                    <td>{{infoGanado?.costeAlimentos}}</td>
+                  </tr>
+                  <tr>
+                    <td>Medicamentos</td>
+                    <td>{{infoGanado?.costeMedicamentos}}</td>
+                  </tr>
+                  <tr>
+                    <td><strong>Total</strong></td>
+                    <td><strong>{{infoGanado?.costeTotal}}</strong></td>
+                  </tr>
+                </tbody>
+              </table>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>

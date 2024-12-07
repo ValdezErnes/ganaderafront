@@ -1,0 +1,170 @@
+.container {
+  flex: 1;
+  display: flex;
+  min-height: 100vh;
+  background: linear-gradient(135deg, #f8f9fa 0%, #e9ecef 100%);
+}
+
+.sidebar {
+  width: 250px;
+  background-color: white;
+  padding: 20px;
+  box-shadow: 2px 0 5px rgba(0,0,0,0.1);
+}
+
+.menu-item {
+  display: flex;
+  align-items: center;
+  padding: 12px;
+  margin: 8px 0;
+  cursor: pointer;
+  border-radius: 8px;
+  transition: background-color 0.3s;
+}
+
+.menu-item:hover {
+  background-color: #f8f9fa;
+}
+
+.menu-item i {
+  margin-right: 12px;
+}
+
+.home-icon::before {
+  content: '⌂';
+  font-size: 1.4rem;
+  color: #000;
+}
+
+.plus-icon::before {
+  content: '+';
+  font-size: 20px;
+  font-weight: bold;
+}
+
+.content {
+  flex: 1;
+  padding: 20px;
+}
+
+.app-wrapper {
+  display: flex;
+  flex-direction: column;
+  min-height: 100vh;
+}
+
+.top-bar {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  background-color: white;
+  padding: 0.5rem 2rem;
+  box-shadow: 0 2px 4px rgba(0,0,0,0.1);
+}
+
+.logo h1 {
+  font-size: 1.2rem;
+  margin: 0;
+}
+
+.user-icon {
+  font-size: 1.5rem;
+  cursor: pointer;
+  padding: 0.5rem;
+}
+
+.dropdown-menu {
+  display: none;
+  position: absolute;
+  right: 0;
+  top: 100%;
+  background-color: white;
+  box-shadow: 0 2px 8px rgba(0,0,0,0.1);
+  border-radius: 4px;
+  min-width: 150px;
+  z-index: 1000;
+}
+
+.dropdown-menu.show {
+  display: block;
+}
+
+.dropdown-menu a {
+  display: block;
+  padding: 0.8rem 1rem;
+  text-decoration: none;
+  color: #333;
+}
+
+.dropdown-menu a:hover {
+  background-color: #f8f9fa;
+}
+
+.stats-container {
+  display: flex;
+  gap: 2rem;
+  padding: 2rem;
+}
+
+.stats-group {
+  display: flex;
+  flex-direction: column;
+  gap: 2rem;
+}
+
+.stats-box {
+  background-color: white;
+  border-radius: 12px;
+  padding: 2rem;
+  box-shadow: 0 2px 8px rgba(0,0,0,0.1);
+  min-width: 200px;
+}
+
+.stats-box.total {
+  height: 100%;
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+}
+
+.stats-box h2 {
+  margin: 0;
+  font-size: 1.5rem;
+  color: #333;
+  font-weight: normal;
+}
+
+.stats-box .number {
+  font-size: 3.5rem;
+  font-weight: bold;
+  margin-top: 1rem;
+  color: #000;
+}
+
+.content {
+  padding: 2rem;
+  background-color: #f8f9fa;
+}
+
+.menu-item.home {
+  background-color: transparent;
+  padding: 8px;
+  margin-bottom: 20px;
+  border-radius: 4px;
+  font-size: 0.9rem;
+  color: #000;
+}
+
+.menu-item.home:hover {
+  background-color: transparent;
+  color: #000;
+}
+
+.menu-item.home .home-icon {
+  font-size: 1.2rem;
+  opacity: 0.85;
+}
+
+.menu-item.home:hover .home-icon {
+  opacity: 1;
+}

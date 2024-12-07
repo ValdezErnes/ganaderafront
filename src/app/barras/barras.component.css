@@ -1,0 +1,100 @@
+/* Estilos específicos para la barra superior */
+.top-bar {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  background-color: white;
+  padding: 0.5rem 2rem;
+  box-shadow: 0 2px 4px rgba(0,0,0,0.1);
+}
+
+.logo.fas {
+  font-size: 50px;
+  margin: 0;
+  font-style: oblique;
+  color:rgb(110, 33, 181);
+  margin-left: 100px;
+}
+
+.user-menu {
+  position: relative;
+}
+
+.user-icon {
+  font-size: 1.5rem;
+  cursor: pointer;
+  padding: 0.5rem;
+}
+
+.dropdown-menu {
+  display: none;
+  position: absolute;
+  right: 0;
+  top: 100%;
+  background-color: white;
+  box-shadow: 0 2px 8px rgba(0,0,0,0.1);
+  border-radius: 4px;
+  min-width: 150px;
+  z-index: 1000;
+}
+
+.dropdown-menu.show {
+  display: block;
+}
+
+.dropdown-menu a {
+  display: block;
+  padding: 0.8rem 1rem;
+  text-decoration: none;
+  color: #333;
+}
+
+.dropdown-menu a:hover {
+  background-color: #f8f9fa;
+}
+
+.sidebar {
+  user-select: none;
+  -webkit-user-select: none;
+}
+.menu-item {
+  display: flex;
+  align-items: center;
+  padding: 12px 16px;
+  text-decoration: none;
+  color: #333;
+  cursor: pointer;
+}
+
+.menu-item.active,
+.menu-item[id="/"].active {
+  background-color: #007bff;
+  color: white;
+}
+
+.menu-item.active:hover,
+.menu-item[id="/"].active:hover {
+  background-color: #0056b3;
+  color: white;
+}
+
+.menu-item:hover:not(.active) {
+  background-color: #f8f9fa;
+}
+
+.menu-item span {
+  margin-left: 12px;
+}
+
+.menu-item i {
+  width: 24px;
+}
+
+.fas {
+  font-size: 15px;
+  width: 24px;
+  height: 24px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}

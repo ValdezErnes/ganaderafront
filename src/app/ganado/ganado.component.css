@@ -1,0 +1,335 @@
+.container {
+  max-width: 1200px;
+  margin: 0 auto;
+  padding: 20px;
+}
+
+.tabs {
+  display: flex;
+  border-bottom: 2px solid #e0e0e0;
+  margin-bottom: 20px;
+  justify-content: center;
+}
+
+.tab-button {
+  background: none;
+  border: none;
+  padding: 10px 20px;
+  font-size: 16px;
+  cursor: pointer;
+  color: #666;
+  position: relative;
+}
+
+.tab-button.active {
+  color: #673ab7;
+}
+
+.tab-button.active::after {
+  content: '';
+  position: absolute;
+  bottom: -2px;
+  left: 0;
+  right: 0;
+  height: 2px;
+  background-color: #673ab7;
+}
+
+.reses-section,
+.ganado-section {
+  background: white;
+  padding: 20px;
+  border-radius: 8px;
+  box-shadow: 0 2px 4px rgba(0,0,0,0.1);
+  margin-top: 20px;
+}
+
+.form-group {
+  margin-bottom: 0;
+}
+
+.form-group label {
+  display: block;
+  margin-bottom: 5px;
+  font-weight: 500;
+  color: #333;
+}
+
+.form-group input {
+  width: 100%;
+  padding: 8px;
+  border: 1px solid #ddd;
+  border-radius: 4px;
+  font-size: 14px;
+}
+
+.submit-group {
+  grid-column: 1 / -1;
+  text-align: right;
+  margin-top: 10px;
+}
+
+button[type="submit"] {
+  background-color: #673ab7;
+  color: white;
+  padding: 10px 20px;
+  border: none;
+  border-radius: 4px;
+  cursor: pointer;
+  font-size: 14px;
+  transition: background-color 0.3s ease;
+}
+
+button[type="submit"]:hover {
+  background-color: #5e35b1;
+}
+
+.hidden {
+  display: none;
+}
+
+table {
+  width: 100%;
+  border-collapse: separate;
+  border-spacing: 0;
+  border: 1px solid #ddd;
+  border-radius: 8px;
+  overflow: hidden;
+}
+
+th {
+  background-color: #5e35b1;
+  color: white;
+  padding: 12px;
+  font-weight: 500;
+  border-right: 1px solid #4527a0;
+  text-align: center;
+}
+
+th:last-child {
+  border-right: none;
+}
+
+td {
+  padding: 12px;
+  border-bottom: 1px solid #ddd;
+  border-right: 1px solid #ddd;
+  text-align: center;
+}
+
+td:last-child {
+  border-right: none;
+}
+
+tr:last-child td {
+  border-bottom: none;
+}
+
+.registro-becerro {
+  margin-top: 20px;
+  background: white;
+  border-radius: 8px;
+  box-shadow: 0 2px 4px rgba(0,0,0,0.1);
+}
+
+.registro-becerro h3 {
+  margin: 0;
+  padding: 15px 20px;
+  border-bottom: 1px solid #eee;
+}
+
+.modal-overlay {
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  background-color: rgba(0, 0, 0, 0.5);
+  display: flex;
+  justify-content: center;
+  align-items: flex-start;
+  z-index: 1000;
+  padding: 20px;
+  overflow-y: auto;
+}
+
+.modal {
+  background-color: #fff;
+  padding: 20px;
+  border-radius: 8px;
+  box-shadow: 0 2px 10px rgba(0, 0, 0, 0.1);
+  max-width: 600px;
+  width: 90%;
+  margin: 20px auto;
+  max-height: 90vh;
+  overflow-y: auto;
+}
+
+.modal-content {
+  position: relative;
+  padding-top: 20px;
+}
+
+.close {
+  position: sticky;
+  top: 10px;
+  right: 10px;
+  font-size: 24px;
+  cursor: pointer;
+  float: right;
+  z-index: 1001;
+}
+
+.accordion-item {
+  border: 1px solid #ddd;
+  border-radius: 4px;
+  margin-bottom: 10px;
+}
+
+.accordion-header {
+  padding: 15px;
+  background-color: #f8f9fa;
+  cursor: pointer;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+}
+
+.accordion-header h3 {
+  margin: 0;
+  font-size: 16px;
+}
+
+.accordion-header i {
+  transition: transform 0.3s ease;
+}
+
+.accordion-content {
+  max-height: 0;
+  overflow: hidden;
+  transition: max-height 0.3s ease-out;
+}
+
+.accordion-content.active {
+  max-height: 500px; /* Ajusta según necesites */
+  padding: 15px;
+}
+
+.accordion-header:hover {
+  background-color: #e9ecef;
+}
+
+/* Rotación del ícono cuando está activo */
+.accordion-item .accordion-content.active + .accordion-header i {
+  transform: rotate(180deg);
+}
+
+/* Estilos para el formulario en grid */
+.form-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+  gap: 20px;
+  padding: 20px;
+  background: #f8f9fa;
+  border-radius: 8px;
+}
+
+.table-container {
+  max-height: 400px;
+  overflow-y: auto;
+  border: 1px solid #ddd;
+  border-radius: 8px;
+  box-shadow: 0 2px 4px rgba(0,0,0,0.1);
+  margin: 20px 0;
+}
+
+.table-container table {
+  width: 100%;
+  border-collapse: collapse;
+}
+
+.table-container thead {
+  position: sticky;
+  top: 0;
+  background-color: #5e35b1;
+  z-index: 1;
+}
+
+/* Para mantener el ancho de las columnas fijo */
+.table-container th,
+.table-container td {
+  min-width: 150px; /* Ajusta según necesites */
+  padding: 8px;
+}
+
+/* Estilo para el scrollbar (opcional) */
+.table-container::-webkit-scrollbar {
+  width: 8px;
+}
+
+.table-container::-webkit-scrollbar-track {
+  background: #f1f1f1;
+}
+
+.table-container::-webkit-scrollbar-thumb {
+  background: #888;
+  border-radius: 4px;
+}
+
+.table-container::-webkit-scrollbar-thumb:hover {
+  background: #555;
+}
+
+.search-container {
+  margin-bottom: 20px;
+}
+
+.search-input {
+  width: 100%;
+  padding: 10px;
+  border: 1px solid #ddd;
+  border-radius: 4px;
+  font-size: 14px;
+  box-shadow: 0 2px 4px rgba(0,0,0,0.05);
+}
+
+.search-input:focus {
+  outline: none;
+  border-color: #673ab7;
+  box-shadow: 0 2px 4px rgba(103, 58, 183, 0.1);
+}
+
+/* Estilos específicos para la tabla de resumen */
+.resumen-table {
+  margin-bottom: 20px;
+  border: 1px solid #ddd;
+  border-radius: 8px;
+  overflow: hidden;
+}
+
+.resumen-table th {
+  background-color: #5e35b1;
+  color: white;
+  padding: 12px;
+  border-right: 1px solid #4527a0;
+}
+
+.resumen-table td {
+  padding: 12px;
+  border-right: 1px solid #ddd;
+}
+
+/* Estilos para las tablas dentro del acordeón en el modal */
+.accordion-content table {
+  border: 1px solid #ddd;
+  border-radius: 8px;
+  overflow: hidden;
+  margin: 10px 0;
+}
+
+.accordion-content th {
+  background-color: #5e35b1;
+  color: white;
+  padding: 12px;
+  border-right: 1px solid #4527a0;
+}

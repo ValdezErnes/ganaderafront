@@ -1,0 +1,11 @@
+<h2>Nueva Contraseña</h2>
+<div class="form-group">
+    <input type="password" [(ngModel)]="nuevaContrasena" placeholder="Nueva contraseña" required minlength="6">
+    <input type="password" [(ngModel)]="confirmarContrasena" placeholder="Confirmar contraseña" required>
+    <div class="button-group">
+        <button (click)="cambiarContrasena()" [disabled]="!nuevaContrasena || !confirmarContrasena">Cambiar contraseña</button>
+        @if(!inciado) {
+            <button type="button" (click)="cancelar()">Cancelar</button>
+        }
+    </div>
+</div>

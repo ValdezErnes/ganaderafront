@@ -1,0 +1,118 @@
+<div class="form-container">
+  <div class="tabs">
+    <button 
+      [class.active]="activeTab === 'general'"
+      (click)="changeTab('general')">
+      General
+    </button>
+    <button 
+      [class.active]="activeTab === 'unitario'"
+      (click)="changeTab('unitario')">
+      Unitario
+    </button>
+  </div>
+
+  <form [formGroup]="alimentoForm" (ngSubmit)="onSubmit()">
+    <div class="form-group">
+      <label for="alimento">Alimento</label>
+      <input 
+        type="text" 
+        id="alimento" 
+        formControlName="alimento" 
+        placeholder="Nombre/Descripción">
+      @if (alimentoForm.get('alimento')?.errors?.['required'] && alimentoForm.get('alimento')?.touched) {
+        <div class="error-message">Este campo es requerido</div>
+      }
+    </div>
+
+    @if (activeTab === 'general') {
+      <div class="info-text">Aplicación a todas las vacas</div>
+
+      <div class="form-group">
+        <label>Tipo de precio</label>
+        <div class="radio-group">
+          <label class="radio-label">
+            <input 
+              type="radio" 
+              formControlName="tipoPrecios" 
+              value="general"> 
+            Precio Total
+          </label>
+          <label class="radio-label">
+            <input 
+              type="radio" 
+              formControlName="tipoPrecios" 
+              value="unitario"> 
+            Precio por Vaca
+          </label>
+        </div>
+      </div>
+
+      <div class="form-group">
+        <label for="costo">
+          @if (alimentoForm.get('tipoPrecios')?.value === 'general') {
+            Costo Total
+          } @else {
+            Costo por Vaca
+          }
+        </label>
+        <input 
+          type="number" 
+          id="costo" 
+          formControlName="costo" 
+          [placeholder]="alimentoForm.get('tipoPrecios')?.value === 'general' ? 'Costo total' : 'Costo x vaca'">
+        @if (alimentoForm.get('costo')?.errors?.['required'] && alimentoForm.get('costo')?.touched) {
+          <div class="error-message">Este campo es requerido</div>
+        }
+        @if (alimentoForm.get('costo')?.errors?.['min']) {
+          <div class="error-message">El costo debe ser mayor a 0</div>
+        }
+      </div>
+    }
+
+    @if (activeTab === 'unitario') {
+      <div class="form-group">
+        <label for="idVaca">Arete</label>
+        <div class="autocomplete-container">
+          <input 
+            type="text" 
+            id="idVaca" 
+            formControlName="idVaca" 
+            placeholder="Número de Arete"
+            (input)="filtrarAretes($event)">
+          @if (aretesFiltrados.length > 0 && mostrarSugerencias) {
+            <div class="suggestions-list">
+              @for (arete of aretesFiltrados; track arete) {
+                <div 
+                  class="suggestion-item" 
+                  (click)="seleccionarArete(arete)">
+                  {{arete}}
+                </div>
+              }
+            </div>
+          }
+        </div>
+        @if (alimentoForm.get('idVaca')?.errors?.['required'] && alimentoForm.get('idVaca')?.touched) {
+          <div class="error-message">Este campo es requerido</div>
+        }
+      </div>
+
+      <div class="form-group">
+        <label for="costo">Costo</label>
+        <input 
+          type="number" 
+          id="costo" 
+          formControlName="costo" 
+          placeholder="Costo">
+        @if (alimentoForm.get('costo')?.errors?.['required'] && alimentoForm.get('costo')?.touched) {
+          <div class="error-message">Este campo es requerido</div>
+        }
+        @if (alimentoForm.get('costo')?.errors?.['min']) {
+          <div class="error-message">El costo debe ser mayor a 0</div>
+        }
+      </div>
+    }
+
+    <button type="submit" class="submit-btn">Registrar</button>
+  </form>
+</div>

@@ -1,0 +1,77 @@
+<div class="container">
+  <div class="tabs">
+    <button class="tab-button" [class.active]="selectedTab === 'ganado'" (click)="selectedTab = 'ganado'">Ganado</button>
+    <button class="tab-button" [class.active]="selectedTab === 'becerro'" (click)="selectedTab = 'becerro'">Becerro</button>
+  </div>
+
+  <!-- Contenido de Ganado -->
+  <div [ngClass]="{'hidden': selectedTab !== 'ganado'}">
+    <section class="reses-section">
+      <h3>Registro de Ganado</h3>
+      <form (ngSubmit)="onSubmit()" class="form-grid">
+        <div class="form-group">
+          <label for="id">Arete:</label>
+          <input type="text" id="id" [(ngModel)]="id" name="id" required>
+        </div>
+
+        <div class="form-group">
+          <label for="raza">Raza:</label>
+          <input type="text" id="raza" [(ngModel)]="raza" name="raza" placeholder="opcional">
+        </div>
+
+        <div class="form-group">
+          <label for="id_padre">Arete del Padre:</label>
+          <input type="text" id="id_padre" [(ngModel)]="id_padre" name="id_padre" placeholder="opcional">
+        </div>
+
+        <div class="form-group">
+          <label for="id_madre">Arete de la Madre:</label>
+          <input type="text" id="id_madre" [(ngModel)]="id_madre" name="id_madre" placeholder="opcional">
+        </div>
+
+        <div class="form-group">
+          <label for="peso">Peso de registro:</label>
+          <input type="number" id="peso" [(ngModel)]="peso" name="peso" required>
+        </div>
+
+        <div class="form-group">
+          <label for="fechaNacimiento">Fecha de Nacimiento:</label>
+          <input type="month" id="fechaNacimiento" [(ngModel)]="fechaNacimiento" name="fechaNacimiento" required>
+        </div>
+
+        <div class="form-group">
+          <label for="precioAdquisicion">Precio de adquisición:</label>
+          <input type="number" id="precioAdquisicion" [(ngModel)]="precioAdquisicion" name="precioAdquisicion" required>
+        </div>
+
+        <div class="form-group submit-group">
+          <button type="submit" *ngIf="id && peso && fechaNacimiento && precioAdquisicion">Registrar Ganado</button>
+        </div>
+      </form>
+    </section>
+  </div>
+
+  <!-- Contenido de Becerro -->
+  <div [ngClass]="{'hidden': selectedTab !== 'becerro'}">
+    <section class="ganado-section">
+      <h3>Registrar Becerros sin Arete</h3>
+      <form (ngSubmit)="onSubmitBecerros()" class="form-grid">
+        <div class="form-group">
+          <label for="cantidadBecerros">Cantidad de Becerros:</label>
+          <input 
+            type="number" 
+            id="cantidadBecerros" 
+            [(ngModel)]="cantidadBecerros" 
+            name="cantidadBecerros"
+            min="1"
+            required>
+        </div>
+        <div class="form-group submit-group">
+          @if (cantidadBecerros >= 1) {
+            <button type="submit" [disabled]="cantidadBecerros < 1">Registrar Becerros</button>
+          }
+        </div>
+      </form>
+    </section>
+  </div>
+</div>

@@ -1,0 +1,127 @@
+.dashboard {
+  padding: 20px;
+  max-width: 1200px;
+  margin: 0 auto;
+}
+
+h1 {
+  color: #5e35b1;
+  text-align: center;
+  margin-bottom: 30px;
+}
+
+.filtros {
+  margin-bottom: 30px;
+  text-align: center;
+}
+
+.filtros select {
+  padding: 8px 15px;
+  font-size: 16px;
+  border: 1px solid #ddd;
+  border-radius: 4px;
+  width: 200px;
+}
+
+.cards-container {
+  display: grid;
+  grid-template-columns: repeat(3, 1fr);
+  gap: 20px;
+  padding: 20px;
+}
+
+.card {
+  background: white;
+  padding: 20px;
+  border-radius: 8px;
+  box-shadow: 0 2px 4px rgba(94, 53, 177, 0.1);
+  text-align: center;
+  transition: transform 0.3s, box-shadow 0.3s;
+}
+
+.card:hover {
+  transform: translateY(-5px);
+  box-shadow: 0 4px 8px rgba(94, 53, 177, 0.2);
+}
+
+.card h3 {
+  color: #5e35b1;
+  margin-bottom: 15px;
+  font-size: 18px;
+}
+
+.monto {
+  font-size: 24px;
+  font-weight: bold;
+  color: #f44336;
+}
+
+.card:last-child {
+  grid-column: 1 / -1;
+  background-color: #ede7f6;
+}
+
+.monto.ventas {
+  color: #4caf50;
+  font-size: 32px;
+}
+
+@media (max-width: 768px) {
+  .cards-container {
+    grid-template-columns: 1fr;
+  }
+  
+  .card:last-child {
+    grid-column: auto;
+  }
+}
+
+.input-fecha {
+  padding: 8px 15px;
+  font-size: 16px;
+  border: 1px solid #ddd;
+  border-radius: 4px;
+  width: 200px;
+  transition: border-color 0.3s;
+}
+
+.input-fecha:focus {
+  outline: none;
+  border-color: #5e35b1;
+  box-shadow: 0 0 0 2px rgba(94, 53, 177, 0.25);
+}
+
+.container {
+  max-width: 1200px;
+  margin: 0 auto;
+  padding: 20px;
+}
+
+.report-section {
+  background: white;
+  padding: 20px;
+  border-radius: 8px;
+  box-shadow: 0 2px 4px rgba(0,0,0,0.1);
+  margin-bottom: 20px;
+}
+
+.report-header {
+  background-color: #5e35b1;
+  color: white;
+  padding: 15px;
+  border-radius: 8px 8px 0 0;
+}
+
+.btn-generate {
+  background-color: #5e35b1;
+  color: white;
+  padding: 10px 20px;
+  border: none;
+  border-radius: 4px;
+  cursor: pointer;
+  transition: background-color 0.3s;
+}
+
+.btn-generate:hover {
+  background-color: #4527a0;
+}

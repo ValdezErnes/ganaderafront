@@ -1,0 +1,101 @@
+<div class="container">
+  <div class="table-container">
+    <button class="btn-add"  (click)="abrirModalNuevoUsuario()">
+      Agregar Usuario
+    </button>
+    <table>
+      <thead>
+        <tr>
+          <th>Nombre</th>
+          <th>Correo</th>
+          <th>Permisos</th>
+        </tr>
+      </thead>
+      <tbody>
+        @for (usuario of usuarios; track usuario.correo) {
+          <tr>
+            <td>{{usuario.nombre}}</td>
+            <td>{{usuario.correo}}</td>
+            <td class="permisos-cell">
+              @for (permiso of obtenerPermisosUsuario(usuario.permisos); track permiso) {
+                <span class="permiso-tag">{{permiso}}</span>
+              }
+            </td>
+            <td class="actions-cell">
+              <button class="btn-edit" (click)="editarUsuarioCompleto(usuario)">
+                Editar
+              </button>
+              <button class="btn-delete" (click)="confirmarEliminar(usuario.correo)">
+                Eliminar
+              </button>
+            </td>
+          </tr>
+        }
+      </tbody>
+    </table>
+  </div>
+
+  <!-- Modal de Usuario -->
+  @if (showUsuarioModal) {
+    <div class="modal-overlay">
+      <div class="modal-content">
+        <h2>{{ selectedUserEmail ? 'Editar Usuario' : 'Nuevo Usuario' }}</h2>
+        <form [formGroup]="usuarioForm" (ngSubmit)="guardarUsuarioCompleto()">
+          <div class="form-group">
+            <label for="nombre">Nombre:</label>
+            <input id="nombre" type="text" formControlName="nombre">
+          </div>
+          
+          <div class="form-group">
+            <label for="correo">Correo:</label>
+            <input id="correo" type="email" formControlName="correo">
+          </div>
+
+          <div class="permisos-section">
+            <label>Permisos:</label>
+            <div class="permisos-grid">
+              @for (permiso of permisosDisponibles; track permiso) {
+                <div class="permiso-checkbox">
+                  <input type="checkbox" 
+                         [id]="permiso" 
+                         [formControlName]="permiso">
+                  <label [for]="permiso">{{permiso}}</label>
+                </div>
+              }
+              @if (showErrorPermisos) {
+                <div class="error-message">
+                  Debe seleccionar al menos un permiso
+                </div>
+              }
+            </div>
+          </div>
+
+          <div class="modal-actions">
+            <button type="submit" class="btn-save">Guardar</button>
+            <button type="button" class="btn-cancel" (click)="cancelarEdicionUsuario()">
+              Cancelar
+            </button>
+          </div>
+        </form>
+      </div>
+    </div>
+  }
+
+  <!-- Modal de confirmación -->
+  @if (showDeleteModal) {
+    <div class="modal-overlay">
+      <div class="modal-content delete-modal">
+        <h2>Confirmar eliminación</h2>
+        <p>¿Estás seguro que deseas eliminar este usuario?</p>
+        <div class="modal-actions">
+          <button class="btn-delete" (click)="eliminarUsuario(usuarioToDelete)">
+            Confirmar
+          </button>
+          <button class="btn-cancel" (click)="cancelarEliminacion()">
+            Cancelar
+          </button>
+        </div>
+      </div>
+    </div>
+  }
+</div>

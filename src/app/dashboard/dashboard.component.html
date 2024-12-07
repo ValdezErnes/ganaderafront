@@ -1,0 +1,21 @@
+<div class="stats-container">
+  <a routerLink="/ganado" class="stats-box total">
+    <h2>Ganado</h2>
+    @defer{<div class="number">{{ totalGanado }}</div>
+    }@loading (minimum 0.5s){<p>cargando</p>}
+  </a>
+  <div class="stats-group">
+    <div class="stats-box">
+      <h2>Adultos</h2>
+      @defer{
+        <div class="number">{{ adultos }}</div>
+      }@loading (minimum 0.5s){<p>cargando</p>}
+    </div>
+    
+    <div class="stats-box">
+      <h2>Becerros</h2>
+      @defer{ <div class="number">{{ becerros }}</div>
+      }@loading (minimum 0.5s){<p>cargando</p>}
+    </div>
+  </div>
+</div>

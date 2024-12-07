@@ -1,0 +1,34 @@
+<div class="dashboard">
+  <h1>Reportes del Mes $</h1>
+  
+  <div class="filtros">
+    <input 
+      type="month" 
+      [(ngModel)]="mesSeleccionado" 
+      (change)="obtenerReporte()"
+      [max]="fechaMaxima"
+      class="input-fecha">
+  </div>
+
+  <div class="cards-container">
+    <div class="card">
+        <h3>Compras de Ganado</h3>
+        <div class="monto">$ {{reporteActual.ganado | number:'1.2-2'}}</div>
+      </div>
+      
+    <div class="card">
+      <h3>Gastos en Alimentos</h3>
+      <div class="monto">$ {{reporteActual.alimentos | number:'1.2-2'}}</div>
+    </div>
+
+    <div class="card">
+      <h3>Gastos en Medicamentos</h3>
+      <div class="monto">$ {{reporteActual.medicamentos | number:'1.2-2'}}</div>
+    </div>
+
+    <div class="card">
+      <h3>Ventas de Ganado</h3>
+      <div class="monto ventas">$ {{reporteActual.ventas | number:'1.2-2'}}</div>
+    </div>
+  </div>
+</div>

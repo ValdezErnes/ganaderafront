@@ -1,0 +1,80 @@
+<div class="form-container">
+  <form [formGroup]="bajaForm" (ngSubmit)="onSubmit()">
+    <div class="form-group">
+      <label for="tipo">Tipo</label>
+      <select 
+        id="tipo" 
+        formControlName="tipo"
+        class="select-input">
+        <option value="">Seleccione el tipo</option>
+        @for (tipo of tipos; track tipo) {
+          <option [value]="tipo">{{tipo}}</option>
+        }
+      </select>
+      @if (bajaForm.get('tipo')?.errors?.['required'] && bajaForm.get('tipo')?.touched) {
+        <div class="error-message">Debe seleccionar un tipo</div>
+      }
+    </div>
+
+    @if (bajaForm.get('tipo')?.value === 'Res') {
+      <div class="form-group">
+        <label for="arete">Arete</label>
+        <div class="autocomplete-container">
+          <input 
+            type="text" 
+            id="arete" 
+            formControlName="arete" 
+            placeholder="Número de arete"
+            (input)="filtrarAretes($event)"
+            >
+          @if (aretesFiltrados.length > 0 && mostrarSugerencias) {
+            <div class="suggestions-list">
+              @for (arete of aretesFiltrados; track arete) {
+                <div 
+                  class="suggestion-item" 
+                  (click)="seleccionarArete(arete)">
+                  {{arete}}
+                </div>
+              }
+            </div>
+          }
+        </div>
+        @if (bajaForm.get('arete')?.errors?.['required'] && bajaForm.get('arete')?.touched) {
+          <div class="error-message">Este campo es requerido</div>
+        }
+      </div>
+    }
+
+   <!---- @if (bajaForm.get('tipo')?.value === 'Becerro') {
+      <div class="form-group">
+        <label for="cantidad">Cantidad</label>
+        <input 
+          type="number" 
+          id="cantidad" 
+          formControlName="cantidad" 
+          placeholder="Cantidad de becerros">
+        @if (bajaForm.get('cantidad')?.errors?.['required'] && bajaForm.get('cantidad')?.touched) {
+          <div class="error-message">Este campo es requerido</div>
+        }
+      </div>
+    }-->	
+
+    <div class="form-group">
+      <label for="motivo">Motivo</label>
+      <select 
+        id="motivo" 
+        formControlName="motivo"
+        class="select-input">
+        <option value="">Seleccione un motivo</option>
+        @for (motivo of motivos; track motivo) {
+          <option [value]="motivo">{{motivo}}</option>
+        }
+      </select>
+      @if (bajaForm.get('motivo')?.errors?.['required'] && bajaForm.get('motivo')?.touched) {
+        <div class="error-message">Debe seleccionar un motivo</div>
+      }
+    </div>
+
+    <button type="submit" class="submit-btn">Baja</button>
+  </form>
+</div>

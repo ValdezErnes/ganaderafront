@@ -1,0 +1,27 @@
+<div class="login-container">
+  <h2>Inicio de sesion</h2>
+  
+  <form [formGroup]="formLogin" (ngSubmit)="Submitee()">
+    <div class="form-group">
+      <label>Correo</label>
+      <input type="email" formControlName="mail" class="form-control" required>
+    @if (this.formLogin.get('mail')?.invalid) {
+        <span style="color: red;">El correo es requerido</span>
+    }
+    </div>
+
+    <div class="form-group">
+      <label>Contraseña</label>
+      <input type="password" formControlName="contra" class="form-control" required>
+    @if (this.formLogin.get('contra')?.errors?.['required']) {
+        <span style="color: red;">La contraseña es requerida</span>
+    }
+    </div>
+
+    <div class="links">
+      <a (click)="navegarA('/recuperarContra')">Recuperar contraseña</a>
+    </div>
+
+    <button type="submit" class="btn-iniciar">Iniciar</button>
+  </form>
+</div>

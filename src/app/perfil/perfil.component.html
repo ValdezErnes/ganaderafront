@@ -1,0 +1,16 @@
+<div class="perfil">
+  <div class="perfil-header">
+    <h2>{{ usuario.nombre }}</h2>
+  </div>
+  <div class="perfil-info">
+    <p><strong>Correo:</strong> {{ usuario.correo }}</p>
+    <p><strong>Permisos:</strong> {{ usuario.permisos }}</p>
+  </div>
+  @if (cambiarContra) {
+    <app-cambiarcontra></app-cambiarcontra>
+    <button class="btn-cambiar" (click)="cambiarContrasena()">Cancelar</button>
+  }
+  @else {
+    <button class="btn-cambiar" (click)="cambiarContrasena()">Cambiar Contraseña</button>
+  }
+</div>

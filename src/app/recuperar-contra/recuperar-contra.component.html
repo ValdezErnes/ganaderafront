@@ -1,0 +1,23 @@
+<div class="recuperar-container">
+  <!-- Vista inicial para solicitar código -->
+  <button style="background-color: #000;" (click)="regresar()">Volver</button>
+  <div *ngIf="!mostrarIngresoCodigo && !mostrarNuevaContra">
+    <h2>Recuperar Contraseña</h2>
+    <input type="email" [(ngModel)]="correo" placeholder="Ingrese su correo">
+    <button (click)="solicitarCodigo()">Solicitar código</button>
+  </div>
+
+  <!-- Vista para ingresar código -->
+  <div *ngIf="mostrarIngresoCodigo && !mostrarNuevaContra">
+    <h2>Ingrese el código</h2>
+    <input type="text" [(ngModel)]="codigo" maxlength="6" placeholder="Ingrese el código">
+    <button (click)="verificarCodigo()">Verificar código</button>
+  </div>
+
+  <!-- Nueva vista para cambiar contraseña -->
+  <div *ngIf="mostrarNuevaContra">
+    <app-cambiarcontra ></app-cambiarcontra>
+  </div>
+
+  <p class="mensaje" *ngIf="mensaje">{{ mensaje }}</p>
+</div>
