@@ -5,6 +5,7 @@ import { HttpClient } from '@angular/common/http';
 import { Router } from '@angular/router';
 import { UsuariosService } from '../services/usuarios.service';
 import { CambiarcontraComponent } from '../cambiarcontra/cambiarcontra.component';
+import { AlertService } from '../services/alert.service';
 
 @Component({
   selector: 'app-recuperar-contra',
@@ -23,7 +24,7 @@ export class RecuperarContraComponent {
   confirmarContrasena: string = '';
   mensaje: string = '';
 
-  constructor(private http: HttpClient, private router: Router, private usuariosService: UsuariosService ) {}
+  constructor(private http: HttpClient, private router: Router, private usuariosService: UsuariosService, private alertService: AlertService  ) {}
 
   regresar() {
     this.router.navigate(['/login']);
@@ -34,7 +35,7 @@ export class RecuperarContraComponent {
       .subscribe({
         next: (response: any) => {
           if (response.message==='El correo no esta registrado') {
-            return alert(response.message);
+            return this.alertService.showError(response.message);
           }
           this.mensaje = 'Código enviado al correo';
           this.codigoEnvio=response.codigo;
@@ -54,7 +55,7 @@ export class RecuperarContraComponent {
         this.mostrarNuevaContra = true;
         this.mostrarIngresoCodigo = false;
       } else {
-        alert('El código es incorrecto');
+        this.alertService.showError('El código es incorrecto');
       }
     } else {
       this.mensaje = 'El código debe tener 6 dígitos';
@@ -70,7 +71,7 @@ export class RecuperarContraComponent {
     this.usuariosService.cambiarContra(this.correo, this.nuevaContrasena)
       .subscribe({
         next: (response: any) => {
-          alert('Contraseña actualizada exitosamente');
+          this.alertService.showSuccess('Contraseña actualizada exitosamente');
           this.router.navigate(['/login']);
         },
         error: (error) => {

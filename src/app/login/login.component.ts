@@ -4,6 +4,7 @@ import { ReactiveFormsModule } from '@angular/forms';
 import     bcryptjs from 'bcryptjs';
 import { UsuariosService } from '../services/usuarios.service';
 import { Router } from '@angular/router';
+import { AlertService } from '../services/alert.service';
 
 @Component({
   selector: 'app-login',
@@ -17,7 +18,7 @@ export class LoginComponent {
   mail: string = '';
   contra: string = '';
 
-  constructor(private fb: FormBuilder, private usuariosService: UsuariosService, private router: Router) {
+  constructor(private fb: FormBuilder, private usuariosService: UsuariosService, private router: Router, private alertService: AlertService) {
     this.formLogin = this.fb.group({
       mail: ['', [Validators.required, Validators.email]],
       contra: ['', [Validators.required]]
@@ -29,7 +30,7 @@ export class LoginComponent {
   Submitee() {
     if (this.formLogin.invalid) {
       this.formLogin.markAllAsTouched();
-      alert('Formulario inválido');
+      this.alertService.showError('Formulario inválido');
       return;
     }
     this.mail = this.formLogin.value.mail ?? '';
@@ -40,11 +41,11 @@ export class LoginComponent {
         localStorage.setItem('usuario', JSON.stringify({nombre: usuarios.nombre,correo: usuarios.correo, permisos: usuarios.permisos}));
         this.router.navigate(['/']);
       }else if(usuarios.message == 'Contraseña incorrecta'){
-        alert('Contraseña incorrecta');
+        this.alertService.showError('Contraseña incorrecta');
       }else if(usuarios.message == 'El usuario no existe'){
-        alert('El usuario no existe');
+        this.alertService.showError('El usuario no existe');
       }else{
-        alert('Error');
+        this.alertService.showError('Error');
       }
     });
   }

@@ -7,12 +7,7 @@ import { AlimentoService } from '../services/alimento.service';
 import { MedicamentoService } from '../services/medicamento.service';
 import { defer } from 'rxjs';
 
-interface Reporte {
-  alimentos: number;
-  medicamentos: number;
-  ganado: number;
-  ventas: number;
-}
+
 
 @Component({
   selector: 'app-reportes',
@@ -24,7 +19,7 @@ interface Reporte {
 export class ReportesComponent implements OnInit {
   mesSeleccionado: string = '';
   fechaMaxima: string | undefined;
-  reporteActual: Reporte = {
+  reporteActual = {
     alimentos: 0,
     medicamentos: 0,
     ganado: 0,
@@ -36,6 +31,10 @@ export class ReportesComponent implements OnInit {
     ganado: [],
     ventas: []
   }
+  mostrarModal: boolean = false;
+  datosModal: any[] = [];
+  tituloModal: string = '';
+  fechaModal: string = '';
   constructor(private ganadoService: GanadoService, private ventaService: VentasService, private alimentosService: AlimentoService, private medicamentosService: MedicamentoService) {}
 
   ngOnInit() {
@@ -123,5 +122,71 @@ export class ReportesComponent implements OnInit {
   getCoste(productos: any[], campoCoste: string): number {
     return productos.reduce((total, producto) => 
       total + Number(producto[campoCoste] || 0), 0);
+  }
+
+  private formatId(id: any): string {
+    return id.toString().padStart(12, '0');
+  }
+
+  private formatDate(date: string): string {
+    const options: Intl.DateTimeFormatOptions = { day: '2-digit', month: 'long', year: 'numeric' };
+    return new Date(date).toLocaleDateString('es-ES', options);
+  }
+
+  abrirModal(tipo: string) {
+    this.mostrarModal = true;
+    this.fechaModal = this.mesSeleccionado;
+
+    const mesSeleccionado = this.mesSeleccionado;
+
+    switch (tipo) {
+      case 'ganado':
+        this.tituloModal = 'Compras de Ganado';
+        this.datosModal = this.reporteTotal.ganado
+          .filter((g: any) => g.fecha_adquisicion?.includes(mesSeleccionado))
+          .map((g: any) => ({
+            id: this.formatId(g.id),
+            precio_adquisicion: g.precio_adquisicion,
+            fecha_adquisicion: this.formatDate(g.fecha_adquisicion)
+          }));
+        break;
+      case 'alimentos':
+        this.tituloModal = 'Gastos en Alimentos';
+        this.datosModal = this.reporteTotal.alimentos
+          .filter((a: any) => a.fecha?.includes(mesSeleccionado))
+          .map((a: any) => ({
+            id_ganado: this.formatId(a.id_ganado),
+            nombre_alimento: a.nombre_alimento,
+            coste: a.coste,
+            fecha: this.formatDate(a.fecha)
+          }));
+        break;
+      case 'medicamentos':
+        this.tituloModal = 'Gastos en Medicamentos';
+        this.datosModal = this.reporteTotal.medicamentos
+          .filter((m: any) => m.fecha?.includes(mesSeleccionado))
+          .map((m: any) => ({
+            id_ganado: this.formatId(m.id_ganado),
+            nombre_medicamento: m.nombre_medicamento,
+            coste: m.coste,
+            fecha: this.formatDate(m.fecha)
+          }));
+        break;
+      case 'ventas':
+        this.tituloModal = 'Ventas de Ganado';
+        console.log(this.reporteTotal.ventas);
+        this.datosModal = this.reporteTotal.ventas
+          .filter((v: any) => v.fecha?.includes(mesSeleccionado))
+          .map((v: any) => ({
+            id_ganado: this.formatId(v.id_ganado||''),
+            precio_venta: v.precio_venta,
+            fecha: this.formatDate(v.fecha)
+          }));
+        break;
+    }
+  }
+
+  cerrarModal() {
+    this.mostrarModal = false;
   }
 }

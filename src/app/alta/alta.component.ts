@@ -1,6 +1,6 @@
-import { Component } from '@angular/core';
+import { Component, OnInit } from '@angular/core';
 import { CommonModule } from '@angular/common';
-import { FormsModule } from '@angular/forms';
+import { FormsModule, FormBuilder, FormGroup, Validators, ReactiveFormsModule } from '@angular/forms';
 import { GanadoService } from '../services/ganado.service';
 import { BecerrosService } from '../services/becerros.service';
 import { AlertService } from '../services/alert.service';
@@ -8,68 +8,85 @@ import { AlertService } from '../services/alert.service';
 @Component({
   selector: 'app-alta',
   standalone: true,
-  imports: [CommonModule, FormsModule],
+  imports: [CommonModule, FormsModule, ReactiveFormsModule],
   templateUrl: './alta.component.html',
-  styleUrl: './alta.component.css'
+  styleUrls: ['./alta.component.css']
 })
-export class AltaComponent {
+export class AltaComponent implements OnInit {
   selectedTab: string = 'ganado';
-  id: number = 0;
-  peso: number = 0;
-  fechaNacimiento: string = '';
-  precioAdquisicion: number = 0;
-  cantidadBecerros: number = 1;
-  raza: string = '';
-  id_padre: string = '';
-  id_madre: string = '';
+  formGanado!: FormGroup;
+  formBecerros!: FormGroup;
 
-  constructor(private ganadoService: GanadoService, private becerrosService: BecerrosService, private alertService: AlertService) {}
+  constructor(
+    private ganadoService: GanadoService,
+    private becerrosService: BecerrosService,
+    private alertService: AlertService,
+    private fb: FormBuilder
+  ) {}
 
-  onSubmit() {
-    const ganado = {
-      id: this.id,
-      peso_registro: this.peso,
-      fecha_nacimiento: this.fechaNacimiento,
-      precio_adquisicion: this.precioAdquisicion,
-      raza: this.raza,
-      id_padre: this.id_padre,
-      id_madre: this.id_madre
-    };
-    this.ganadoService.postGanado(
-      ganado.id, 
-      ganado.peso_registro, 
-      ganado.fecha_nacimiento, 
-      ganado.precio_adquisicion,
-    ).subscribe({
-      next: (response) => {
-        this.alertService.showSuccess('Ganado registrado exitosamente');
-        if(ganado.id_padre!='' || ganado.id_madre!=''){
-          this.ganadoService.postPadres(ganado.id, parseInt(ganado.id_padre), parseInt(ganado.id_madre)).subscribe({
-            next: (response) => {
-            },error: (error) => {
-              this.alertService.showError('Error al registrar padres ');
-            }
-          });
-          if(ganado.raza!=''){
-            this.ganadoService.postRaza(ganado.id, ganado.raza).subscribe({
-              next: (response) => {
-              },error: (error) => {
-                this.alertService.showError('Error al registrar raza ');
-              }
-            });
-          }
-          this.limpiarFormulario();
-        }
-      },
-      error: (error) => {
-        this.alertService.showError('Error al registrar ganado ');
-      }
+  ngOnInit() {
+    this.formGanado = this.fb.group({
+      id: ['', [Validators.required, Validators.minLength(12), Validators.maxLength(12), Validators.pattern(/^[0-9]+$/)]],
+      peso: ['', [Validators.required, Validators.pattern(/^[0-9]+(\.[0-9]+)?$/)]],
+      fechaNacimiento: ['', Validators.required],
+      precioAdquisicion: ['', [Validators.required, Validators.pattern(/^[0-9]+(\.[0-9]+)?$/)]],
+      raza: [''],
+      id_padre: ['', [Validators.pattern(/^[0-9]*$/)]],
+      id_madre: ['', [Validators.pattern(/^[0-9]*$/)]]
+    });
+
+    this.formBecerros = this.fb.group({
+      cantidadBecerros: [1, [Validators.required, Validators.min(1)]]
     });
   }
 
+  onSubmit() {
+    if (this.formGanado.valid) {
+      if(this.formGanado.get('id')?.value.length!=12){
+        this.alertService.showError('El arete debe tener 12 dígitos.');
+        return;
+      }
+      if(this.formGanado.get('id_padre')?.value.length!=12 && this.formGanado.get('id_padre')?.value.length!=0){
+        this.alertService.showError('El arete del padre debe tener 12 dígitos.');
+        return;
+      }
+      if(this.formGanado.get('id_madre')?.value.length!=12 && this.formGanado.get('id_madre')?.value.length!=0){
+        this.alertService.showError('El arete de la madre debe tener 12 dígitos.');
+        return;
+      }
+      const ganado = this.formGanado.value;
+      this.ganadoService.postGanado(ganado.id, ganado.peso, ganado.fechaNacimiento, ganado.precioAdquisicion).subscribe({
+        next: (response) => {
+          this.alertService.showSuccess('Ganado registrado exitosamente');
+          if(ganado.id_padre>0 || ganado.id_madre>0){
+            this.ganadoService.postPadres(ganado.id, ganado.id_padre, ganado.id_madre).subscribe({
+              next: (response) => {
+              },error: (error) => {
+                this.alertService.showError('Error al registrar padres ');
+              }
+            });
+            if(ganado.raza!=''){
+              this.ganadoService.postRaza(ganado.id, ganado.raza).subscribe({
+                next: (response) => {
+                },error: (error) => {
+                  this.alertService.showError('Error al registrar raza ');
+                }
+              });
+            }
+            this.limpiarFormulario();
+          }
+        },
+        error: (error) => {
+          this.alertService.showError('Error al registrar ganado ');
+        }
+      });
+    }
+  }
+
   onSubmitBecerros() {
-    if (this.cantidadBecerros > 0) {
-      for(let i=0;i<this.cantidadBecerros;i++){
+    if (this.formBecerros.valid) {
+      const cantidad = this.formBecerros.value.cantidadBecerros;
+      for(let i=0;i<cantidad;i++){
         this.becerrosService.postBecerro().subscribe({
           next: (response) => {
             this.alertService.showSuccess('Becerro registrado exitosamente');
@@ -82,17 +99,13 @@ export class AltaComponent {
           }
         });
       }
-      this.cantidadBecerros = 1; // Reset después del registro
+      this.formBecerros.reset();
     }
   }
 
   private limpiarFormulario() {
-    this.id = 0;
-    this.peso = 0;
-    this.fechaNacimiento = '';
-    this.precioAdquisicion = 0;
-    this.raza = '';
-    this.id_padre = '';
-    this.id_madre = '';
+    this.formGanado.reset();
+    this.formBecerros.reset();
   }
+
 }

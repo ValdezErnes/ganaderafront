@@ -3,13 +3,14 @@ import { FormBuilder, FormGroup, ReactiveFormsModule, Validators } from '@angula
 import { CommonModule } from '@angular/common';
 import { AlimentoService } from '../services/alimento.service';
 import { GanadoService } from '../services/ganado.service';
+import { AlertService } from '../services/alert.service';
 
 @Component({
   selector: 'app-alimento',
   standalone: true,
   imports: [ReactiveFormsModule, CommonModule],
   templateUrl: './alimento.component.html',
-  styleUrl: './alimento.component.css'
+  styleUrls: ['./alimento.component.css']
 })
 export class AlimentoComponent {
   alimentoForm: FormGroup;
@@ -21,7 +22,8 @@ export class AlimentoComponent {
   constructor(
     private fb: FormBuilder, 
     private alimentoService: AlimentoService,
-    private ganadoService: GanadoService
+    private ganadoService: GanadoService,
+    private alertService: AlertService
   ) {
     this.alimentoForm = this.fb.group({
       alimento: ['', Validators.required],
@@ -38,6 +40,9 @@ export class AlimentoComponent {
     this.ganadoService.getGanados().subscribe({
       next: (ganados: any) => {
         this.ganado = ganados;
+        this.ganado.forEach(ganado => {
+          ganado.id = '0'.repeat(12 - ganado.id.toString().length) + ganado.id.toString();
+        });      
       },
       error: (error) => {
         console.error('Error al cargar ganado:', error);
@@ -86,22 +91,51 @@ export class AlimentoComponent {
 
   onSubmit() {
     if (this.alimentoForm.valid) {
-      if(this.activeTab != 'general'){
+      if (this.activeTab !== 'general') {
         this.alimentoService.postAlimento(
           this.alimentoForm.value.idVaca,
           this.alimentoForm.value.alimento,
           this.alimentoForm.value.costo
-        ).subscribe(response => {
-          console.log(response);
+        ).subscribe({
+          next: (response) => {
+            this.alertService.showSuccess('Alimento registrado exitosamente');
+            this.alimentoForm.reset();
+          },
+          error: (error) => {
+            this.alertService.showError('Error al registrar alimento');
+            console.error('Error al registrar alimento:', error);
+          }
         });
       } else {
-        if(this.alimentoForm.value.tipoPrecios == 'general'){
+        if (this.alimentoForm.value.tipoPrecios === 'general') {
           this.alimentoService.postAlimentoAll(
             'g',
             this.alimentoForm.value.alimento,
             this.alimentoForm.value.costo
-          ).subscribe(response => {
-            console.log(response);
+          ).subscribe({
+            next: (response) => {
+              this.alertService.showSuccess('Alimento registrado exitosamente');
+              this.alimentoForm.reset();
+            },
+            error: (error) => {
+              this.alertService.showError('Error al registrar alimento');
+              console.error('Error al registrar alimento:', error);
+            }
+          });
+        } else {
+          this.alimentoService.postAlimentoAll(
+            'u',
+            this.alimentoForm.value.alimento,
+            this.alimentoForm.value.costo
+          ).subscribe({
+            next: (response) => {
+              this.alertService.showSuccess('Alimento registrado exitosamente');
+              this.alimentoForm.reset();
+            },
+            error: (error) => {
+              this.alertService.showError('Error al registrar alimento');
+              console.error('Error al registrar alimento:', error);
+            }
           });
         }
       }

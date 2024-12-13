@@ -95,3 +95,59 @@ input[type=number] {
 .suggestion-item:hover {
   background-color: #f5f5f5;
 }
+
+.consultar-costo-btn {
+  width: 100%;
+  padding: 1rem;
+  background-color: #007bff;
+  color: white;
+  border: none;
+  border-radius: 4px;
+  font-size: 1rem;
+  cursor: pointer;
+  transition: background-color 0.3s, transform 0.2s;
+}
+
+.consultar-costo-btn:hover {
+  background-color: #0056b3;
+  transform: scale(1.05);
+}
+
+.consultar-costo-btn:focus {
+  outline: none;
+  box-shadow: 0 0 0 2px rgba(0, 123, 255, 0.5);
+}
+
+.modal {
+  display: none; /* Ocultar por defecto */
+  position: fixed; /* Fijo en la pantalla */
+  z-index: 1000; /* Por encima de otros elementos */
+  left: 0;
+  top: 0;
+  width: 100%; /* Ancho completo */
+  height: 100%; /* Alto completo */
+  overflow: auto; /* Habilitar scroll si es necesario */
+  background-color: rgba(0, 0, 0, 0.5); /* Fondo oscuro con opacidad */
+}
+
+.modal.is-active {
+  display: block; /* Mostrar el modal cuando está activo */
+}
+
+.modal-content {
+  position: relative;
+  margin: auto;
+  padding: 20px;
+  background: white;
+  border-radius: 8px;
+  width: 80%; /* Ancho del modal */
+  max-width: 500px; /* Ancho máximo */
+}
+
+.modal-background {
+  position: absolute;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+}

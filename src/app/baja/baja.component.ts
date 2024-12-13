@@ -4,6 +4,7 @@ import { CommonModule } from '@angular/common';
 import { BajasService } from '../services/bajas.service';
 import { GanadoService } from '../services/ganado.service';
 import { AlertService } from '../services/alert.service';
+import { BecerrosService } from '../services/becerros.service';
 
 @Component({
   selector: 'app-baja',
@@ -19,8 +20,9 @@ export class BajaComponent {
   ganado: any[] = [];
   aretesFiltrados: any[] = [];
   mostrarSugerencias: boolean = false;
+  becerros:number = 0;
 
-  constructor(private fb: FormBuilder, private bajasService: BajasService, private ganadoService: GanadoService, private alertService: AlertService ) {
+  constructor(private fb: FormBuilder, private bajasService: BajasService, private ganadoService: GanadoService, private alertService: AlertService, private becerrosService: BecerrosService ) {
     this.bajaForm = this.fb.group({
       tipo: ['', Validators.required],
       arete: [''],
@@ -42,9 +44,20 @@ export class BajaComponent {
     this.ganadoService.getGanados().subscribe({
       next: (ganados: any) => {
         this.ganado = ganados;
+        this.ganado.forEach(ganado => {
+          ganado.id = '0'.repeat(12 - ganado.id.toString().length) + ganado.id.toString();
+        });      
       },
       error: (error: any) => {
         this.alertService.showError('Error al obtener ganado');
+      }
+    });
+    this.becerrosService.getBecerros().subscribe({
+      next: (becerros: any) => {
+        this.becerros = becerros;
+      },
+      error: (error: any) => {
+        this.alertService.showError('Error al obtener becerros');
       }
     });
 
@@ -54,7 +67,6 @@ export class BajaComponent {
       }
     });
   }
-
   filtrarAretes(event: any) {
     const valor = event.target.value;
     this.mostrarSugerencias = true;
@@ -88,17 +100,23 @@ export class BajaComponent {
         this.bajasService.postBaja(id_ganado, motivo).subscribe({
           next: (response) => {
             this.alertService.showSuccess('Baja registrada exitosamente');
+            this.aretesFiltrados = this.aretesFiltrados.filter(id => id !== this.bajaForm.value.arete);
+            this.bajaForm.reset();
           },
           error: (error) => {
             this.alertService.showError('Error al registrar la baja de res');
           }
         });
       } else {
+        if(this.becerros <= 0){
+          return this.alertService.showError('No hay becerros en el sistema');
+        }
         let motivo : string;
         motivo = this.bajaForm.value.motivo;
         this.bajasService.postbajaBecerro(motivo).subscribe({
           next: (response) => {
             this.alertService.showSuccess('Baja registrada exitosamente');
+            this.bajaForm.reset();
           },
           error: (error) => {
             this.alertService.showError('Error al registrar la baja');

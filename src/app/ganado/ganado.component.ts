@@ -3,6 +3,7 @@ import { CommonModule } from '@angular/common';
 import { FormsModule } from '@angular/forms';
 import { GanadoService } from '../services/ganado.service';
 import { BecerrosService } from '../services/becerros.service';
+import { AlertService } from '../services/alert.service';
 
 interface Res {
   id: number;
@@ -54,15 +55,13 @@ export class GanadoComponent implements OnInit {
     { tipo: 'Res', cantidad: 0 }
   ];
   selectedTab: string = 'ganado';
-  nuevoBecerro: NuevoBecerro = {
-    arete: '',
-    fechaNacimiento: '',
-    peso: 0,
-    costo: 0,
-    raza: '',
-    id_padre: '',
-    id_madre: ''
-  };
+  arete: number = 0;
+  fechaNacimiento: string = '';
+  peso: number = 0;
+  costo: number = 0;
+  raza: string = '';
+  id_padre: number = 0;
+  id_madre: number = 0;
   mostrarModal: boolean = false;
   infoGanado: InfoGanado | null = null;
   activeAccordion: string | null = null;
@@ -70,7 +69,7 @@ export class GanadoComponent implements OnInit {
   resesFiltradas: Res[] = [];
   
 
-  constructor(private ganadoService: GanadoService, private becerrosService: BecerrosService) {
+  constructor(private ganadoService: GanadoService, private becerrosService: BecerrosService, private alertService: AlertService) {
     this.infoGanado = {
       arete: '',
       raza: '',
@@ -132,48 +131,24 @@ export class GanadoComponent implements OnInit {
     return fechaLocal.toLocaleDateString();
   }
 
-  registrarBecerro() {
-    if (this.validarFormularioBecerro()) {
-      this.becerrosService.postBecerro().subscribe({
-        next: (response) => {
-          console.log('Becerro registrado exitosamente:', response);
-          this.limpiarFormularioBecerro();
-          this.cargarDatos(); // Recargar datos después de registrar
-        },
-        error: (error) => {
-          console.error('Error al registrar becerro:', error);
-        }
-      });
-    }
-  }
-
-  private validarFormularioBecerro(): boolean {
-    return !!(
-      this.nuevoBecerro.arete &&
-      this.nuevoBecerro.fechaNacimiento &&
-      this.nuevoBecerro.peso > 0 &&
-      this.nuevoBecerro.costo > 0
-    );
-  }
 
   private limpiarFormularioBecerro() {
-    this.nuevoBecerro = {
-      arete: '',
-      fechaNacimiento: '',
-      peso: 0,
-      costo: 0,
-      raza: '',
-      id_padre: '',
-      id_madre: ''
-    };
+    this.arete = 0;
+    this.fechaNacimiento = '';
+    this.peso = 0;
+    this.costo = 0;
+    this.raza = '';
+    this.id_padre = 0;
+    this.id_madre = 0;
   }
+
   informacion(id: number) {
     this.ganadoService.getinfo(id).subscribe({
       next: (response) => {
-        alert(response.ganado.id);
+        console.log(response);
           this.infoGanado = {
             arete: response.ganado.id,
-            raza: response.raza || 'No registrada',
+            raza: response.raza ? response.raza.nombre : 'No registrada',
             padres: response.padres ? 
               [`Padre: ${response.padres.id_padre || 'No registrado'}`, 
                `Madre: ${response.padres.id_madre || 'No registrado'}`] :
@@ -217,5 +192,51 @@ export class GanadoComponent implements OnInit {
         res.id.toString().toLowerCase().includes(this.searchArete.toLowerCase())
       );
     }
+  }
+  registrarBecerro() {
+    const ganado = {
+      id: this.arete,
+      peso_registro: this.peso,
+      fecha_nacimiento: this.fechaNacimiento,
+      precio_adquisicion: this.costo,
+      raza: this.raza,
+      id_padre: this.id_padre,
+      id_madre: this.id_madre
+    };
+    this.ganadoService.postGanado(
+      ganado.id, 
+      ganado.peso_registro, 
+      ganado.fecha_nacimiento, 
+      ganado.precio_adquisicion,
+    ).subscribe({
+      next: (response) => {
+        this.alertService.showSuccess('Ganado registrado exitosamente');
+        if(ganado.id_padre>0 || ganado.id_madre>0){
+          this.ganadoService.postPadres(ganado.id, ganado.id_padre, ganado.id_madre).subscribe({
+            next: (response) => {
+            },error: (error) => {
+              this.alertService.showError('Error al registrar padres ');
+            }
+          });
+          if(ganado.raza!=''){
+            this.ganadoService.postRaza(ganado.id, ganado.raza).subscribe({
+              next: (response) => {
+              },error: (error) => {
+                this.alertService.showError('Error al registrar raza ');
+              }
+            });
+          }
+          this.resumenGanado[0].cantidad--;
+          this.resumenGanado[1].cantidad++;
+          this.limpiarFormularioBecerro();
+        }
+      },
+      error: (error) => {
+        this.alertService.showError('Error al registrar ganado ');
+      }
+    });
+  }
+  formatearArete(id: number): string {
+    return '0'.repeat(12 - id.toString().length) + id.toString();
   }
 }

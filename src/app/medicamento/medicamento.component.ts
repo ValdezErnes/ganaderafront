@@ -3,6 +3,7 @@ import { FormBuilder, FormGroup, ReactiveFormsModule, Validators } from '@angula
 import { CommonModule } from '@angular/common';
 import { MedicamentoService } from '../services/medicamento.service';
 import { GanadoService } from '../services/ganado.service';
+import { AlertService } from '../services/alert.service';
 
 @Component({
   selector: 'app-medicamento',
@@ -21,7 +22,8 @@ export class MedicamentoComponent {
   constructor(
     private fb: FormBuilder, 
     private medicamentoService: MedicamentoService,
-    private ganadoService: GanadoService
+    private ganadoService: GanadoService,
+    private alertService: AlertService
   ) {
     this.medicamentoForm = this.fb.group({
       medicamento: ['', Validators.required],
@@ -38,6 +40,9 @@ export class MedicamentoComponent {
     this.ganadoService.getGanados().subscribe({
       next: (ganados: any) => {
         this.ganado = ganados;
+        this.ganado.forEach(ganado => {
+          ganado.id = '0'.repeat(12 - ganado.id.toString().length) + ganado.id.toString();
+        });      
       },
       error: (error) => {
         console.error('Error al cargar ganado:', error);
@@ -90,16 +95,16 @@ export class MedicamentoComponent {
       console.log(this.medicamentoForm.value.medicamento);
       console.log(this.medicamentoForm.value.costo);
       this.medicamentoService.postMedicamento(this.medicamentoForm.value.idVaca,this.medicamentoForm.value.medicamento,this.medicamentoForm.value.costo).subscribe(response => {
-        console.log(response);
+        this.alertService.showSuccess('Medicamento registrado exitosamente');
       });
     }else{
       if(this.medicamentoForm.value.tipoPrecios == 'general'){
         this.medicamentoService.postMedicamentoAll('g',this.medicamentoForm.value.medicamento,this.medicamentoForm.value.costo).subscribe(response => {
-          console.log(response);
+          this.alertService.showSuccess('Medicamento registrado exitosamente');
         });
       }else{
         this.medicamentoService.postMedicamentoAll('u',this.medicamentoForm.value.medicamento,this.medicamentoForm.value.costo).subscribe(response => {
-          console.log(response);
+          this.alertService.showSuccess('Medicamento registrado exitosamente');
         });
       }
     }

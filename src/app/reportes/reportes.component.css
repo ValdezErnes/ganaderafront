@@ -125,3 +125,65 @@ h1 {
 .btn-generate:hover {
   background-color: #4527a0;
 }
+/* front/src/app/reportes/reportes.component.css */
+.modal {
+  display: block; /* Mostrar el modal */
+  position: fixed; /* Fijo en la pantalla */
+  z-index: 1000; /* Por encima de otros elementos */
+  left: 0;
+  top: 0;
+  width: 100%; /* Ancho completo */
+  height: 100%; /* Alto completo */
+  overflow: auto; /* Habilitar desplazamiento si es necesario */
+  background-color: rgba(0, 0, 0, 0.5); /* Fondo oscuro */
+}
+
+.modal-content {
+  background-color: #fefefe;
+  margin: 10% auto; /* 10% desde la parte superior y centrado */
+  padding: 20px;
+  border: 1px solid #888;
+  width: 80%; /* Ancho del modal */
+  border-radius: 8px; /* Bordes redondeados */
+  box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2); /* Sombra */
+}
+
+.close {
+  color: #aaa;
+  float: right;
+  font-size: 28px;
+  font-weight: bold;
+}
+
+.close:hover,
+.close:focus {
+  color: black;
+  text-decoration: none;
+  cursor: pointer;
+}
+
+/* Estilos para la tabla */
+table {
+  width: 100%; /* Ancho completo */
+  border-collapse: collapse; /* Colapsar bordes */
+  margin-top: 20px; /* Espacio superior */
+}
+
+th, td {
+  border: 1px solid #ddd; /* Bordes de las celdas */
+  padding: 8px; /* Espaciado interno */
+  text-align: left; /* Alinear texto a la izquierda */
+}
+
+th {
+  background-color: #5e35b1; /* Color de fondo de los encabezados */
+  color: white; /* Color del texto de los encabezados */
+}
+
+tr:nth-child(even) {
+  background-color: #f2f2f2; /* Color de fondo para filas pares */
+}
+
+tr:hover {
+  background-color: #ddd; /* Color de fondo al pasar el mouse */
+}

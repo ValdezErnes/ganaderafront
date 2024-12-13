@@ -9,21 +9,16 @@
           formControlName="idVaca" 
           placeholder="Arete"
           (input)="filtrarAretes($event)">
-        @if (aretesFiltrados.length > 0 && mostrarSugerencias) {
-          <div class="suggestions-list">
-            @for (arete of aretesFiltrados; track arete) {
-              <div 
-                class="suggestion-item" 
-                (click)="seleccionarArete(arete)">
-                {{arete}}
-              </div>
-            }
+        <div *ngIf="aretesFiltrados.length > 0 && mostrarSugerencias" class="suggestions-list">
+          <div 
+            class="suggestion-item" 
+            *ngFor="let arete of aretesFiltrados" 
+            (click)="seleccionarArete(arete)">
+            {{arete}}
           </div>
-        }
+        </div>
       </div>
-      @if (ventaForm.get('idVaca')?.errors?.['required'] && ventaForm.get('idVaca')?.touched) {
-        <div class="error-message">Este campo es requerido</div>
-      }
+      <div *ngIf="ventaForm.get('idVaca')?.errors?.['required'] && ventaForm.get('idVaca')?.touched" class="error-message">Este campo es requerido</div>
     </div>
 
     <div class="form-group">
@@ -33,14 +28,35 @@
         id="precioVenta" 
         formControlName="precioVenta" 
         placeholder="pesos sin signo">
-      @if (ventaForm.get('precioVenta')?.errors?.['required'] && ventaForm.get('precioVenta')?.touched) {
-        <div class="error-message">Este campo es requerido</div>
-      }
-      @if (ventaForm.get('precioVenta')?.errors?.['min']) {
-        <div class="error-message">El precio debe ser mayor a 0</div>
-      }
+      <div *ngIf="ventaForm.get('precioVenta')?.errors?.['required'] && ventaForm.get('precioVenta')?.touched" class="error-message">Este campo es requerido</div>
+      <div *ngIf="ventaForm.get('precioVenta')?.errors?.['min']" class="error-message">El precio debe ser mayor a 0</div>
     </div>
 
-    <button type="submit" class="submit-btn">Registrar</button>
+    <button type="submit" class="submit-btn">Registrar Venta</button>
   </form>
+<br>
+  <button class="consultar-costo-btn" (click)="consultarCosto()">Consultar Gastos</button>
+
+  <div *ngIf="costoConsultado !== null" class="resultado-costo">
+    <h4>Gastos: {{costoConsultado | currency}}</h4>
+    <p>gastos de adquisicion: {{ costoAdquisicion | currency }}</p>
+    <p>gastos de alimentos: {{ costoAlimentos | currency }}</p>
+    <p>gastos de medicamentos: {{ costoMedicamentos | currency }}</p>
+  </div>
+</div>
+
+<div class="modal" [ngClass]="{'is-active': isModalActive}">
+  <div class="modal-background" (click)="closeModal()"></div>
+  <div class="modal-content">
+    <div class="box">
+      <h4 class="title">Detalles de la Venta</h4>
+      <p><strong>Ganancia:</strong> {{ ganancia | currency }}</p>
+      <p><strong>Precio de Venta:</strong> {{ precioVenta | currency }}</p>
+      <p><strong>Gasto de Adquisición:</strong> {{ costoAdquisicion | currency }}</p>
+      <p><strong>Gastos de Alimentos:</strong> {{ costoAlimentos | currency }}</p>
+      <p><strong>Gastos de Medicamentos:</strong> {{ costoMedicamentos | currency }}</p>
+      <p><strong>Gastos Totales:</strong> {{ costoConsultado | currency }}</p>
+      <button class="button is-primary" (click)="closeModal()">Cerrar</button>
+    </div>
+  </div>
 </div>

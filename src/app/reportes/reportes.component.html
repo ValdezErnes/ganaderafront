@@ -11,24 +11,90 @@
   </div>
 
   <div class="cards-container">
-    <div class="card">
+    <div class="card" (click)="abrirModal('ganado')">
         <h3>Compras de Ganado</h3>
         <div class="monto">$ {{reporteActual.ganado | number:'1.2-2'}}</div>
       </div>
       
-    <div class="card">
+    <div class="card" (click)="abrirModal('alimentos')">
       <h3>Gastos en Alimentos</h3>
       <div class="monto">$ {{reporteActual.alimentos | number:'1.2-2'}}</div>
     </div>
 
-    <div class="card">
+    <div class="card" (click)="abrirModal('medicamentos')">
       <h3>Gastos en Medicamentos</h3>
       <div class="monto">$ {{reporteActual.medicamentos | number:'1.2-2'}}</div>
     </div>
 
-    <div class="card">
+    <div class="card" (click)="abrirModal('ventas')">
       <h3>Ventas de Ganado</h3>
       <div class="monto ventas">$ {{reporteActual.ventas | number:'1.2-2'}}</div>
+    </div>
+  </div>
+
+  <!-- Modal -->
+  <div *ngIf="mostrarModal" class="modal">
+    <div class="modal-content">
+      <span class="close" (click)="cerrarModal()">&times;</span>
+      <h2>{{ tituloModal }}</h2>
+      <p>Fecha: {{ fechaModal }}</p>
+      <table>
+        <thead>
+          <tr>
+            @if(tituloModal === 'Compras de Ganado'){
+            <th >Arete</th>
+            <th >Precio Adquisición</th>
+            <th >Fecha Adquisición</th>
+          }
+          @if(tituloModal === 'Gastos en Alimentos'){
+            <th >Arete</th>
+            <th >Nombre Alimento</th>
+            <th >Coste</th>
+            <th >Fecha</th>
+          }
+          @if(tituloModal === 'Gastos en Medicamentos'){
+            <th >Arete</th>
+            <th >Nombre Medicamento</th>
+            <th >Coste</th>
+            <th >Fecha</th>
+          }
+          @if(tituloModal === 'Ventas de Ganado'){
+            <th >Arete</th>
+            <th >Precio Venta</th>
+            <th >Fecha</th>
+          }
+          </tr>
+        </thead>
+        <tbody>
+          <tr *ngFor="let dato of datosModal">
+            @if(tituloModal === 'Compras de Ganado'){
+            <td>{{ dato.id }}</td>
+            <td>{{ dato.precio_adquisicion }}</td>
+            <td>{{ dato.fecha_adquisicion }}</td>
+
+            }
+            @if(tituloModal === 'Gastos en Alimentos'){
+            <td>{{ dato.id_ganado }}</td>
+            <td>{{ dato.nombre_alimento }}</td>
+            <td>{{ dato.coste }}</td>
+            <td>{{ dato.fecha }}</td>
+
+            }
+            @if(tituloModal === 'Gastos en Medicamentos'){
+            <td>{{ dato.id_ganado }}</td>
+            <td>{{ dato.nombre_medicamento }}</td>
+            <td>{{ dato.coste }}</td>
+            <td>{{ dato.fecha }}</td>
+
+            }
+            @if(tituloModal === 'Ventas de Ganado'){
+            <td>{{ dato.id_ganado }}</td>
+            <td>{{ dato.precio_venta }}</td>
+            <td>{{ dato.fecha }}</td>
+            }
+          </tr>
+        </tbody>
+      </table>
     </div>
   </div>
 </div>
