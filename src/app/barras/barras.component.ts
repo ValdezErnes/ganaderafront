@@ -17,12 +17,6 @@ export class BarrasComponent implements OnInit {
   selectedItem: string = '';
 
   constructor(private router: Router, private alertService: AlertService) {
-    if(localStorage.getItem('usuario')){
-      this.usuario = JSON.parse(localStorage.getItem('usuario') ?? '');
-    }else{
-      this.router.navigate(['/login']);
-    }
-    this.selectedItem = this.router.url;
   }
 
   toggleUserMenu() {
@@ -36,7 +30,13 @@ export class BarrasComponent implements OnInit {
   }
 
   ngOnInit() {
-    document.getElementById(this.selectedItem)?.classList.add('active');
-    this.navegarA(this.selectedItem);
+    if(localStorage.getItem('usuario')){
+      this.usuario = JSON.parse(localStorage.getItem('usuario') ?? '');
+      this.selectedItem = this.router.url;
+      document.getElementById(this.selectedItem)?.classList.add('active');
+      this.navegarA(this.selectedItem);
+    }else{
+      this.router.navigate(['/login']);
+    }
   }
 }
