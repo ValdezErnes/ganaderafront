@@ -30,6 +30,10 @@ export class BarrasComponent implements OnInit {
   }
 
   ngOnInit() {
+    this.usuario = {
+  nombre: "no registrado"
+};
+
 if (typeof localStorage !== 'undefined' && localStorage.getItem('usuario')) {
       this.usuario = JSON.parse(localStorage.getItem('usuario') ?? '');
       this.selectedItem = this.router.url;
