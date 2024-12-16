@@ -17,11 +17,6 @@ export class BarrasComponent implements OnInit {
   selectedItem: string = '';
 
   constructor(private router: Router, private alertService: AlertService) {
-    if(localStorage.getItem('usuario')){
-      this.usuario = JSON.parse(localStorage.getItem('usuario') ?? '');
-    }else{
-      this.router.navigate(['/login']);
-    }
     this.selectedItem = this.router.url;
   }
 
@@ -36,6 +31,11 @@ export class BarrasComponent implements OnInit {
   }
 
   ngOnInit() {
+    if(localStorage.getItem('usuario')){
+      this.usuario = JSON.parse(localStorage.getItem('usuario') ?? '');
+    }else{
+      this.navegarA('/login');
+    }
     document.getElementById(this.selectedItem)?.classList.add('active');
     this.navegarA(this.selectedItem);
   }

@@ -14,12 +14,5 @@ import { CommonModule } from '@angular/common';
   styleUrl: './app.component.css'
 })
 export class AppComponent {
-    constructor(public router: Router) {
-    const inicio=localStorage.getItem('usuario');
-    if (inicio == null) {
-      // if (this.router.url != '/recuperarContra'&&this.router.url != '/login') {
-      //   this.router.navigate(['/login']);
-      // }
-    }
-  }
+    constructor(public router: Router) {  }
 }

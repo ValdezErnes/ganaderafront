@@ -5,7 +5,7 @@
     </div>
     <div class="user-menu">
       <div class="user-icon" (click)="toggleUserMenu()">
-        {{usuario.nombre}} 👤
+        {{usuario?.nombre}} 👤
         <div class="dropdown-menu" [class.show]="isUserMenuOpen">
           <a (click)="navegarA('/perfil')">Perfil</a>
           <a (click)="navegarA('/login')">Cerrar Sesión</a>
@@ -21,49 +21,49 @@
         <i class="fas fa-home"></i>
         <span>Home</span>
       </a>
-      @if(usuario.permisos.includes('Ganado')){
+      @if(usuario?.permisos.includes('Ganado')){
       <a class="menu-item" id="/ganado" (click)="navegarA('/ganado')">
         <i class="fas fa-cow"></i>
         <span>Ganado</span>
       </a>
       }
-      @if(usuario.permisos.includes('Usuarios')){
+      @if(usuario?.permisos.includes('Usuarios')){
       <a class="menu-item" id="/usuarios" (click)="navegarA('/usuarios')">
         <i class="fas fa-users"></i>
         <span>Usuarios</span>
       </a>
       }
-      @if(usuario.permisos.includes('Alta')){
+      @if(usuario?.permisos.includes('Alta')){
       <a class="menu-item" id="/alta" (click)="navegarA('/alta')">
         <i class="fas fa-plus-circle"></i>
         <span>Alta</span>
       </a>
       }
-      @if(usuario.permisos.includes('Baja')){
+      @if(usuario?.permisos.includes('Baja')){
       <a class="menu-item" id="/baja" (click)="navegarA('/baja')">
         <i class="fas fa-minus-circle"></i>
         <span>Baja</span>
       </a>
       }
-      @if(usuario.permisos.includes('Venta')){
+      @if(usuario?.permisos.includes('Venta')){
       <a class="menu-item" id="/venta" (click)="navegarA('/venta')">
         <i class="fas fa-cash-register"></i>
         <span>Venta</span>
       </a>
       }
-      @if(usuario.permisos.includes('Medicamento')){
+      @if(usuario?.permisos.includes('Medicamento')){
       <a class="menu-item" id="/medicamento" (click)="navegarA('/medicamento')">
         <i class="fas fa-pills"></i>
         <span>Medicamento</span>
       </a>
       }
-      @if(usuario.permisos.includes('Alimento')){
+      @if(usuario?.permisos.includes('Alimento')){
       <a class="menu-item" id="/alimento" (click)="navegarA('/alimento')">
         <i class="fas fa-wheat-awn"></i>
         <span>Alimento</span>
       </a>
       }
-      @if(usuario.permisos.includes('Reportes')){
+      @if(usuario?.permisos.includes('Reportes')){
       <a class="menu-item" id="/reportes" (click)="navegarA('/reportes')">
         <i class="fas fa-chart-line"></i>
         <span>Reportes $</span>
