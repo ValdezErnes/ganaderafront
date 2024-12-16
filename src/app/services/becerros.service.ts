@@ -5,7 +5,7 @@ import { Observable } from 'rxjs';
   providedIn: 'root'
 })
 export class BecerrosService {
-  private apiUrl = 'http://localhost:8500/becerros';
+  private apiUrl = 'http://yomero.website:8500/becerros';
   constructor(private http: HttpClient) { }
   getBecerros(): Observable<any> {
     return this.http.get<number>(`${this.apiUrl}`);

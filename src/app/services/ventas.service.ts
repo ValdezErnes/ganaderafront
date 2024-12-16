@@ -10,9 +10,9 @@ export class VentasService {
   constructor(private http: HttpClient) { }
 
   postVenta(id_ganado: number, precio_venta: number): Observable<any> {
-    return this.http.post('http://localhost:8500/ventas', { id_ganado, precio_venta });
+    return this.http.post('http://yomero.website:8500/ventas', { id_ganado, precio_venta });
   }
   getVentas(): Observable<any> {
-    return this.http.get('http://localhost:8500/ventas');
+    return this.http.get('http://yomero.website:8500/ventas');
   }
 }

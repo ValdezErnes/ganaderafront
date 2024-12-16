@@ -5,7 +5,7 @@ import { Injectable } from '@angular/core';
   providedIn: 'root'
 })
 export class GanadoService {
-  private apiUrl = 'http://localhost:8500/ganado';
+  private apiUrl = 'http://yomero.website:8500/ganado';
   constructor(private http: HttpClient ) { }
 
   getGanados() {

@@ -5,7 +5,7 @@ import { Injectable } from '@angular/core';
   providedIn: 'root'
 })
 export class AlimentoService {
-  private apiUrl = 'http://localhost:8500/alimentos';
+  private apiUrl = 'http://yomero.website:8500/alimentos';
 
   constructor(private http: HttpClient) { }
 

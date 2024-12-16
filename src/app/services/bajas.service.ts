@@ -5,7 +5,7 @@ import { Injectable } from '@angular/core';
   providedIn: 'root'
 })
 export class BajasService {
-  private apiUrl = 'http://localhost:8500/bajas';
+  private apiUrl = 'http://yomero.website:8500/bajas';
   constructor(private http: HttpClient ) { }
 
   getBajas() {
